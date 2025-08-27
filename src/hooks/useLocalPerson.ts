@@ -1,6 +1,11 @@
 import { useMemo, useState } from "react";
 import { type SwapiPerson } from "../services/types";
-import { loadPersonEdit, savePersonEdit, clearPersonEdit, type PersonEditPatch } from "../services/localEdits";
+import {
+  loadPersonEdit,
+  savePersonEdit,
+  clearPersonEdit,
+  type PersonEditPatch,
+} from "../services/localEdits";
 
 export function useLocalPerson(base: SwapiPerson | undefined, id: string) {
   const [patch, setPatch] = useState<PersonEditPatch>(() => loadPersonEdit(id));

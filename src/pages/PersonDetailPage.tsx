@@ -41,14 +41,46 @@ export default function PersonDetailPage() {
       </Typography>
 
       <Stack spacing={2} sx={{ maxWidth: 480 }}>
-        <TextField label="Name" value={merged.name} onChange={(e) => update("name", e.target.value)} />
-        <TextField label="Height" value={merged.height} onChange={(e) => update("height", e.target.value)} />
-        <TextField label="Mass" value={merged.mass} onChange={(e) => update("mass", e.target.value)} />
-        <TextField label="Hair color" value={merged.hair_color} onChange={(e) => update("hair_color", e.target.value)} />
-        <TextField label="Skin color" value={merged.skin_color} onChange={(e) => update("skin_color", e.target.value)} />
-        <TextField label="Eye color" value={merged.eye_color} onChange={(e) => update("eye_color", e.target.value)} />
-        <TextField label="Birth year" value={merged.birth_year} onChange={(e) => update("birth_year", e.target.value)} />
-        <TextField label="Gender" value={merged.gender} onChange={(e) => update("gender", e.target.value)} />
+        <TextField
+          label="Name"
+          value={merged.name}
+          onChange={(e) => update("name", e.target.value)}
+        />
+        <TextField
+          label="Height"
+          value={merged.height}
+          onChange={(e) => update("height", e.target.value)}
+        />
+        <TextField
+          label="Mass"
+          value={merged.mass}
+          onChange={(e) => update("mass", e.target.value)}
+        />
+        <TextField
+          label="Hair color"
+          value={merged.hair_color}
+          onChange={(e) => update("hair_color", e.target.value)}
+        />
+        <TextField
+          label="Skin color"
+          value={merged.skin_color}
+          onChange={(e) => update("skin_color", e.target.value)}
+        />
+        <TextField
+          label="Eye color"
+          value={merged.eye_color}
+          onChange={(e) => update("eye_color", e.target.value)}
+        />
+        <TextField
+          label="Birth year"
+          value={merged.birth_year}
+          onChange={(e) => update("birth_year", e.target.value)}
+        />
+        <TextField
+          label="Gender"
+          value={merged.gender}
+          onChange={(e) => update("gender", e.target.value)}
+        />
 
         <Stack direction="row" spacing={2}>
           <Button

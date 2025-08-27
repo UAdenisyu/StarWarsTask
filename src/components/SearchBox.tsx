@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import TextField from "@mui/material/TextField";
+import { Box } from "@mui/material";
 
 type SearchBoxProps = {
   value: string;
@@ -8,7 +9,12 @@ type SearchBoxProps = {
   label?: string;
 };
 
-export default function SearchBox({ value, onChange, debounceMs = 350, label = "Search" }: SearchBoxProps) {
+export default function SearchBox({
+  value,
+  onChange,
+  debounceMs = 350,
+  label = "Search",
+}: SearchBoxProps) {
   const [inner, setInner] = useState(value);
   const debounced = useMemo(() => {
     let timer: number | undefined;
@@ -23,16 +29,23 @@ export default function SearchBox({ value, onChange, debounceMs = 350, label = "
   }, [value]);
 
   return (
-    <TextField
-      fullWidth
-      value={inner}
-      label={label}
-      placeholder="Type to search people"
-      onChange={(e) => {
-        const v = e.target.value;
-        setInner(v);
-        debounced(v);
-      }}
-    />
+    <Box sx={{ padding: 2, bgcolor: "white", borderRadius: 1 }}>
+      <TextField
+        fullWidth
+        value={inner}
+        label={label}
+        sx={{
+          bgcolor: "white",
+          boxShadow: 2,
+          borderRadius: 1,
+        }}
+        placeholder="Type to search people"
+        onChange={(e) => {
+          const v = e.target.value;
+          setInner(v);
+          debounced(v);
+        }}
+      />
+    </Box>
   );
 }

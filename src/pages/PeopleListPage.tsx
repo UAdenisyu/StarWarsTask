@@ -30,21 +30,27 @@ export default function PeopleListPage() {
   });
 
   function setPage(next: number) {
-    setParams((prev) => {
-      const p = new URLSearchParams(prev);
-      p.set("page", String(next));
-      return p;
-    }, { replace: true });
+    setParams(
+      (prev) => {
+        const p = new URLSearchParams(prev);
+        p.set("page", String(next));
+        return p;
+      },
+      { replace: true }
+    );
   }
 
   function setSearch(next: string) {
-    setParams((prev) => {
-      const p = new URLSearchParams(prev);
-      if (next) p.set("search", next);
-      else p.delete("search");
-      p.set("page", "1");
-      return p;
-    }, { replace: true });
+    setParams(
+      (prev) => {
+        const p = new URLSearchParams(prev);
+        if (next) p.set("search", next);
+        else p.delete("search");
+        p.set("page", "1");
+        return p;
+      },
+      { replace: true }
+    );
   }
 
   if (isError) {
@@ -59,9 +65,7 @@ export default function PeopleListPage() {
 
       {isPending && <PeopleSkeletonGrid />}
 
-      {!isPending && data && data.results.length === 0 && (
-        <Typography>No results</Typography>
-      )}
+      {!isPending && data && data.results.length === 0 && <Typography>No results</Typography>}
 
       {!isPending && data && data.results.length > 0 && (
         <>
@@ -72,12 +76,7 @@ export default function PeopleListPage() {
               </Grid>
             ))}
           </Grid>
-          <PaginationBar
-            page={page}
-            total={data.count}
-            pageSize={PAGE_SIZE}
-            onChange={setPage}
-          />
+          <PaginationBar page={page} total={data.count} pageSize={PAGE_SIZE} onChange={setPage} />
         </>
       )}
     </Box>

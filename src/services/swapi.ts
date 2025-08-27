@@ -7,7 +7,11 @@ export function getPersonIdFromUrl(url: string): string {
   return parts[parts.length - 1];
 }
 
-export async function fetchPeople(page: number, search: string, signal?: AbortSignal): Promise<SwapiListResponse<SwapiPerson>> {
+export async function fetchPeople(
+  page: number,
+  search: string,
+  signal?: AbortSignal
+): Promise<SwapiListResponse<SwapiPerson>> {
   const params = new URLSearchParams();
   if (page > 0) params.set("page", String(page));
   if (search) params.set("search", search);
