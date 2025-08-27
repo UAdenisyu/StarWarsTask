@@ -65,7 +65,11 @@ export default function PeopleListPage() {
 
       {isPending && <PeopleSkeletonGrid />}
 
-      {!isPending && data && data.results.length === 0 && <Typography>No results</Typography>}
+      {!isPending && data && data.results.length === 0 && (
+        <Box sx={{ backgroundColor: "background.default", padding: 2, borderRadius: 1 }}>
+          <Typography>No results</Typography>
+        </Box>
+      )}
 
       {!isPending && data && data.results.length > 0 && (
         <>
@@ -76,7 +80,9 @@ export default function PeopleListPage() {
               </Grid>
             ))}
           </Grid>
-          <PaginationBar page={page} total={data.count} pageSize={PAGE_SIZE} onChange={setPage} />
+          <Box bgcolor={"background.default"} mt={2} borderRadius={1}>
+            <PaginationBar page={page} total={data.count} pageSize={PAGE_SIZE} onChange={setPage} />
+          </Box>
         </>
       )}
     </Box>

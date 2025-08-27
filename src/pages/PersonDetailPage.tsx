@@ -5,9 +5,9 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
+import Skeleton from "@mui/material/Skeleton";
 import { fetchPersonById } from "../services/swapi";
 import { useLocalPerson } from "../hooks/useLocalPerson";
 
@@ -19,7 +19,6 @@ export default function PersonDetailPage() {
   });
 
   const { merged, update, save, reset } = useLocalPerson(data, id);
-
   const [savedOpen, setSavedOpen] = useState(false);
 
   useEffect(() => {
@@ -28,18 +27,49 @@ export default function PersonDetailPage() {
 
   if (isError) return <Alert severity="error">{(error as Error).message}</Alert>;
 
-  if (isPending || !merged) return <Typography>Loading…</Typography>;
+  if (isPending || !merged) {
+    return (
+      <Box
+        sx={{
+          backgroundColor: "white",
+          p: 2,
+          borderRadius: 1,
+          boxShadow: 1,
+        }}
+        aria-busy
+        aria-live="polite"
+      >
+        <Button component={RouterLink} to="/" variant="text" sx={{ mb: 2 }}>
+          Back to list
+        </Button>
+
+        <Stack spacing={2} sx={{ maxWidth: 480, mt: 2 }}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <Box key={i}>
+              <Skeleton variant="rectangular" height={56} sx={{ borderRadius: 1 }} />
+            </Box>
+          ))}
+          <Stack direction="row" spacing={2}>
+            <Skeleton variant="rectangular" width={130} height={36} sx={{ borderRadius: 1 }} />
+            <Skeleton variant="rectangular" width={120} height={36} sx={{ borderRadius: 1 }} />
+          </Stack>
+        </Stack>
+      </Box>
+    );
+  }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        backgroundColor: "white",
+        p: 2,
+        borderRadius: 1,
+        boxShadow: 1,
+      }}
+    >
       <Button component={RouterLink} to="/" variant="text" sx={{ mb: 2 }}>
         Back to list
       </Button>
-
-      <Typography variant="h4" gutterBottom>
-        {merged.name}
-      </Typography>
-
       <Stack spacing={2} sx={{ maxWidth: 480 }}>
         <TextField
           label="Name"

@@ -29,13 +29,13 @@ export default function SearchBox({
   }, [value]);
 
   return (
-    <Box sx={{ padding: 2, bgcolor: "white", borderRadius: 1 }}>
+    <Box sx={{ padding: 2, bgcolor: "background.default", borderRadius: 1 }}>
       <TextField
         fullWidth
         value={inner}
         label={label}
         sx={{
-          bgcolor: "white",
+          bgcolor: "background.default",
           boxShadow: 2,
           borderRadius: 1,
         }}
