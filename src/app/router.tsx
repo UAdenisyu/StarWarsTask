@@ -1,3 +1,4 @@
+// src/app/router.tsx
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import Container from "@mui/material/Container";
 import AppBar from "@mui/material/AppBar";
@@ -24,16 +25,19 @@ function AppLayout() {
   );
 }
 
-export const appRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <AppLayout />,
-    children: [
-      { index: true, element: <PeopleListPage /> },
-      { path: "people/:id", element: <PersonDetailPage /> },
-    ],
-  },
-  { path: "*", element: <div>Not found</div> },
-]);
+export const appRouter = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <AppLayout />,
+      children: [
+        { index: true, element: <PeopleListPage /> },
+        { path: "people/:id", element: <PersonDetailPage /> },
+      ],
+    },
+    { path: "*", element: <div>Not found</div> },
+  ],
+  { basename: import.meta.env.BASE_URL }
+);
 
 export default appRouter;
