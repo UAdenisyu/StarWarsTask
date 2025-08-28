@@ -191,15 +191,5 @@ Mock `fetch` or wrap fetchers for deterministic tests.
 
 ---
 
-## Nice-to-Have (future work)
-- E2E tests (Playwright).
-- Prefetch character details on card hover.
-- Persist React Query cache (offline mode).
-- i18n (en/ru/uk).
-- Dark theme toggle.
-- CI: GitHub Actions for lint/test/build on PRs.
-
----
-
 ## Author
-**Denis Yukhnovets** — contact: 
+**Denis Yukhnovets**
