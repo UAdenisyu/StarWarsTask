@@ -9,7 +9,9 @@ import PersonCard from "../components/PersonCard";
 import PaginationBar from "../components/PaginationBar";
 import SearchBox from "../components/SearchBox";
 import { fetchPeople } from "../services/swapi";
+import { getPersonEdit } from "../services/localEdits";
 import { PeopleSkeletonGrid } from "../components/Skeletons";
+import { getPersonIdFromUrl } from "../services/swapi";
 
 const PAGE_SIZE = 10;
 
@@ -74,11 +76,16 @@ export default function PeopleListPage() {
       {!isPending && data && data.results.length > 0 && (
         <>
           <Grid container spacing={2}>
-            {data.results.map((person) => (
-              <Grid key={person.url} size={{ xs: 12, sm: 6 }}>
-                <PersonCard person={person} />
-              </Grid>
-            ))}
+            {data.results.map((person) => {
+              const id = getPersonIdFromUrl(person.url);
+              const patch = getPersonEdit(id);
+              const merged = patch ? { ...person, ...patch } : person;
+              return (
+                <Grid key={person.url} size={{ xs: 12, sm: 6 }}>
+                  <PersonCard person={merged} />
+                </Grid>
+              );
+            })}
           </Grid>
           <Box bgcolor={"background.default"} mt={2} borderRadius={1}>
             <PaginationBar page={page} total={data.count} pageSize={PAGE_SIZE} onChange={setPage} />

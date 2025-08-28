@@ -1,4 +1,4 @@
-export type PersonEditPatch = Partial<{
+export type PersonPatch = Partial<{
   name: string;
   height: string;
   mass: string;
@@ -9,19 +9,31 @@ export type PersonEditPatch = Partial<{
   gender: string;
 }>;
 
+export type PersonEditPatch = PersonPatch;
+
 const KEY_PREFIX = "swapi:person:";
 
-export function loadPersonEdit(id: string): PersonEditPatch {
+export function loadPersonEdit(id: string): PersonPatch {
   const raw = localStorage.getItem(KEY_PREFIX + id);
   if (!raw) return {};
   try {
-    return JSON.parse(raw) as PersonEditPatch;
+    return JSON.parse(raw) as PersonPatch;
   } catch {
     return {};
   }
 }
 
-export function savePersonEdit(id: string, patch: PersonEditPatch): void {
+export function getPersonEdit(id: string): PersonPatch | null {
+  const raw = localStorage.getItem(KEY_PREFIX + id);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as PersonPatch;
+  } catch {
+    return null;
+  }
+}
+
+export function savePersonEdit(id: string, patch: PersonPatch): void {
   localStorage.setItem(KEY_PREFIX + id, JSON.stringify(patch));
 }
 

@@ -18,6 +18,7 @@ export function useLocalPerson(base: SwapiPerson | undefined, id: string) {
   function update(field: keyof PersonEditPatch, value: string) {
     const next = { ...patch, [field]: value };
     setPatch(next);
+    savePersonEdit(id, next);
   }
 
   function save() {
