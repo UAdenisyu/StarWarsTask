@@ -7,16 +7,13 @@ import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
-import Skeleton from "@mui/material/Skeleton";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 
 import { fetchCharacterById } from "../services/swapi";
 import { useLocalCharacter } from "../hooks/useLocalCharacter";
+import SelectInput from "../components/SelectInput";
+import { CharacterDetailSkeleton } from "../components/Skeletons";
 
-export default function CharacterDetailPage() {
+const CharacterDetailPage = () => {
   const { id = "" } = useParams();
   const { data, isPending, isError, error } = useQuery({
     queryKey: ["character", id],
@@ -30,48 +27,17 @@ export default function CharacterDetailPage() {
     if (merged?.name) document.title = `${merged.name} — SWAPI Explorer`;
   }, [merged?.name]);
 
-  if (isError) return <Alert severity="error">{(error as Error).message}</Alert>;
+  const onSaveLocally = () => {
+    save();
+    setSavedOpen(true);
+  };
 
-  if (isPending || !merged) {
-    return (
-      <Box
-        sx={{
-          backgroundColor: "white",
-          p: 2,
-          borderRadius: 1,
-          boxShadow: 1,
-        }}
-        aria-busy
-        aria-live="polite"
-      >
-        <Button component={RouterLink} to="/" variant="text" sx={{ mb: 2 }}>
-          Back to list
-        </Button>
+  if (isError) return <Alert severity="error">{error.message}</Alert>;
 
-        <Stack spacing={2} sx={{ maxWidth: 480, mt: 2 }}>
-          {Array.from({ length: 8 }).map((_, i) => (
-            <Box key={i}>
-              <Skeleton variant="rectangular" height={56} sx={{ borderRadius: 1 }} />
-            </Box>
-          ))}
-          <Stack direction="row" spacing={2}>
-            <Skeleton variant="rectangular" width={130} height={36} sx={{ borderRadius: 1 }} />
-            <Skeleton variant="rectangular" width={120} height={36} sx={{ borderRadius: 1 }} />
-          </Stack>
-        </Stack>
-      </Box>
-    );
-  }
+  if (isPending || !merged) return <CharacterDetailSkeleton />;
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "white",
-        p: 2,
-        borderRadius: 1,
-        boxShadow: 1,
-      }}
-    >
+    <Box sx={layoutSx}>
       <Button component={RouterLink} to="/" variant="text" sx={{ mb: 2 }}>
         Back to list
       </Button>
@@ -112,35 +78,10 @@ export default function CharacterDetailPage() {
           onChange={(e) => update("birth_year", e.target.value)}
         />
 
-        <FormControl fullWidth>
-          <InputLabel id="gender-label">Gender</InputLabel>
-          <Select
-            labelId="gender-label"
-            label="Gender"
-            value={merged.gender ?? ""}
-            onChange={(e) => update("gender", String(e.target.value))}
-          >
-            <MenuItem value="male">male</MenuItem>
-            <MenuItem value="female">female</MenuItem>
-            <MenuItem value="n/a">n/a (droid)</MenuItem>
-            <MenuItem value="hermaphrodite">hermaphrodite</MenuItem>
-            <MenuItem value="none">none</MenuItem>
-            <MenuItem value="unknown">unknown</MenuItem>
-            <MenuItem disabled>──────────</MenuItem>
-            <MenuItem value="masculine programming">masculine programming (droid)</MenuItem>
-            <MenuItem value="feminine programming">feminine programming (droid)</MenuItem>
-            <MenuItem value="no gender programming">no gender programming (droid)</MenuItem>
-          </Select>
-        </FormControl>
+        <SelectInput gender={merged.gender} onChange={update} />
 
         <Stack direction="row" spacing={2}>
-          <Button
-            variant="contained"
-            onClick={() => {
-              save();
-              setSavedOpen(true);
-            }}
-          >
+          <Button variant="contained" onClick={onSaveLocally}>
             Save locally
           </Button>
           <Button variant="outlined" color="inherit" onClick={reset}>
@@ -157,4 +98,13 @@ export default function CharacterDetailPage() {
       />
     </Box>
   );
-}
+};
+
+const layoutSx = {
+  backgroundColor: "white",
+  p: 2,
+  borderRadius: 1,
+  boxShadow: 1,
+} as const;
+
+export default CharacterDetailPage;

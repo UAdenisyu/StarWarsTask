@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { type SwapiCharacter } from "../services/types";
 import {
   loadCharacterEdit,
@@ -15,20 +15,23 @@ export function useLocalCharacter(base: SwapiCharacter | undefined, id: string) 
     return { ...base, ...patch } as SwapiCharacter;
   }, [base, patch]);
 
-  function update(field: keyof CharacterEditPatch, value: string) {
-    const next = { ...patch, [field]: value };
-    setPatch(next);
-    saveCharacterEdit(id, next);
-  }
+  const update = useCallback(
+    (field: keyof CharacterEditPatch, value: string) => {
+      const next = { ...patch, [field]: value };
+      setPatch(next);
+      saveCharacterEdit(id, next);
+    },
+    [id, patch]
+  );
 
-  function save() {
+  const save = useCallback(() => {
     saveCharacterEdit(id, patch);
-  }
+  }, [id, patch]);
 
-  function reset() {
+  const reset = useCallback(() => {
     setPatch({});
     clearCharacterEdit(id);
-  }
+  }, [id]);
 
   return { merged, patch, update, save, reset };
 }

@@ -13,6 +13,15 @@ export type SwapiCharacter = {
   skin_color: string;
   eye_color: string;
   birth_year: string;
-  gender: string;
+  gender:
+    | "male"
+    | "female"
+    | "n/a"
+    | "hermaphrodite"
+    | "none"
+    | "unknown"
+    | "masculine programming"
+    | "feminine programming"
+    | "no gender programming";
   url: string;
 };

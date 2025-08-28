@@ -12,10 +12,10 @@ import { fetchCharacters } from "../services/swapi";
 import { getCharacterEdit } from "../services/localEdits";
 import { CharactersSkeletonGrid } from "../components/Skeletons";
 import { getCharacterIdFromUrl } from "../services/swapi";
+import { GRID_PAGE_SIZE } from "../constants";
+import { setPage, setSearch } from "../services/navigation";
 
-const PAGE_SIZE = 10;
-
-export default function CharactersListPage() {
+const CharactersListPage = () => {
   const [params, setParams] = useSearchParams();
   const page = Math.max(1, Number(params.get("page") || 1));
   const search = params.get("search") || "";
@@ -31,29 +31,25 @@ export default function CharactersListPage() {
     queryFn: ({ signal }) => fetchCharacters(page, search, signal),
   });
 
-  function setPage(next: number) {
-    setParams(
-      (prev) => {
-        const p = new URLSearchParams(prev);
-        p.set("page", String(next));
-        return p;
-      },
-      { replace: true }
-    );
-  }
-
-  function setSearch(next: string) {
-    setParams(
-      (prev) => {
-        const p = new URLSearchParams(prev);
-        if (next) p.set("search", next);
-        else p.delete("search");
-        p.set("page", "1");
-        return p;
-      },
-      { replace: true }
-    );
-  }
+  const chars = useMemo(
+    () =>
+      data && data.results.length
+        ? data.results.map(
+            (character) => {
+              const id = getCharacterIdFromUrl(character.url);
+              const patch = getCharacterEdit(id);
+              const merged = patch ? { ...character, ...patch } : character;
+              return (
+                <Grid key={character.url} size={{ xs: 12, sm: 6 }}>
+                  <CharacterCard character={merged} />
+                </Grid>
+              );
+            },
+            [data]
+          )
+        : null,
+    [data]
+  );
 
   if (isError) {
     return <Alert severity="error">{(error as Error).message}</Alert>;
@@ -62,7 +58,11 @@ export default function CharactersListPage() {
   return (
     <Box>
       <Box sx={{ mb: 2 }}>
-        <SearchBox value={search} onChange={setSearch} label="Search characters" />
+        <SearchBox
+          value={search}
+          onChange={(value) => setSearch(value, setParams)}
+          label="Search characters"
+        />
       </Box>
 
       {isPending && <CharactersSkeletonGrid />}
@@ -76,22 +76,20 @@ export default function CharactersListPage() {
       {!isPending && data && data.results.length > 0 && (
         <>
           <Grid container spacing={2}>
-            {data.results.map((character) => {
-              const id = getCharacterIdFromUrl(character.url);
-              const patch = getCharacterEdit(id);
-              const merged = patch ? { ...character, ...patch } : character;
-              return (
-                <Grid key={character.url} size={{ xs: 12, sm: 6 }}>
-                  <CharacterCard character={merged} />
-                </Grid>
-              );
-            })}
+            {chars}
           </Grid>
           <Box bgcolor={"background.default"} mt={2} borderRadius={1}>
-            <PaginationBar page={page} total={data.count} pageSize={PAGE_SIZE} onChange={setPage} />
+            <PaginationBar
+              page={page}
+              total={data.count}
+              pageSize={GRID_PAGE_SIZE}
+              onChange={(value) => setPage(value, setParams)}
+            />
           </Box>
         </>
       )}
     </Box>
   );
-}
+};
+
+export default CharactersListPage;

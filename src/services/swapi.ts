@@ -2,10 +2,10 @@ import { type SwapiListResponse, type SwapiCharacter } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE as string;
 
-export function getCharacterIdFromUrl(url: string): string {
+export const getCharacterIdFromUrl = (url: string): string => {
   const parts = url.split("/").filter(Boolean);
   return parts[parts.length - 1];
-}
+};
 
 export async function fetchCharacters(
   page: number,
@@ -16,7 +16,7 @@ export async function fetchCharacters(
   if (page > 0) params.set("page", String(page));
   if (search) params.set("search", search);
   const res = await fetch(`${API_BASE}/people/?${params.toString()}`, { signal });
-  if (!res.ok) throw new Error("Failed to load people");
+  if (!res.ok) throw new Error("Failed to load characters");
   return res.json();
 }
 

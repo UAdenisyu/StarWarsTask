@@ -6,7 +6,9 @@ export const appTheme = createTheme({
     primary: { main: "#0D0D0D" },
     background: { default: "#fafafa" },
   },
-  shape: { borderRadius: 14 },
+  shape: {
+    borderRadius: 14,
+  },
 });
 
 export default appTheme;

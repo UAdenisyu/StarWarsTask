@@ -7,16 +7,7 @@ import Box from "@mui/material/Box";
 
 export default function AppLayout() {
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        bgcolor: "background.default",
-        backgroundImage: "url('background.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
-    >
+    <Box sx={layoutSx}>
       <AppBar position="sticky">
         <Toolbar>
           <Typography variant="h6" component="div">
@@ -30,3 +21,12 @@ export default function AppLayout() {
     </Box>
   );
 }
+
+const layoutSx = {
+  minHeight: "100vh",
+  bgcolor: "background.default",
+  backgroundImage: "url('background.jpg')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundAttachment: "fixed",
+} as const;

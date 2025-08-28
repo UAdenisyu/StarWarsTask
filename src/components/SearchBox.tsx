@@ -29,16 +29,12 @@ export default function SearchBox({
   }, [value]);
 
   return (
-    <Box sx={{ padding: 2, bgcolor: "background.default", borderRadius: 1 }}>
+    <Box sx={textFieldSx}>
       <TextField
         fullWidth
         value={inner}
         label={label}
-        sx={{
-          bgcolor: "background.default",
-          boxShadow: 2,
-          borderRadius: 1,
-        }}
+        sx={layoutSx}
         placeholder="Type to search characters"
         onChange={(e) => {
           const v = e.target.value;
@@ -49,3 +45,15 @@ export default function SearchBox({
     </Box>
   );
 }
+
+const layoutSx = {
+  bgcolor: "background.default",
+  boxShadow: 2,
+  borderRadius: 1,
+} as const;
+
+const textFieldSx = {
+  padding: 2,
+  bgcolor: "background.default",
+  borderRadius: 1,
+} as const;
