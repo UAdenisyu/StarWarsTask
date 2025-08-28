@@ -5,30 +5,30 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
-import PersonCard from "../components/PersonCard";
+import CharacterCard from "../components/CharacterCard";
 import PaginationBar from "../components/PaginationBar";
 import SearchBox from "../components/SearchBox";
-import { fetchPeople } from "../services/swapi";
-import { getPersonEdit } from "../services/localEdits";
-import { PeopleSkeletonGrid } from "../components/Skeletons";
-import { getPersonIdFromUrl } from "../services/swapi";
+import { fetchCharacters } from "../services/swapi";
+import { getCharacterEdit } from "../services/localEdits";
+import { CharactersSkeletonGrid } from "../components/Skeletons";
+import { getCharacterIdFromUrl } from "../services/swapi";
 
 const PAGE_SIZE = 10;
 
-export default function PeopleListPage() {
+export default function CharactersListPage() {
   const [params, setParams] = useSearchParams();
   const page = Math.max(1, Number(params.get("page") || 1));
   const search = params.get("search") || "";
 
   useEffect(() => {
-    document.title = "People — SWAPI Explorer";
+    document.title = "Characters — SWAPI Explorer";
   }, []);
 
   const queryKey = useMemo(() => ["people", { page, search }], [page, search]);
 
   const { data, isPending, isError, error } = useQuery({
     queryKey,
-    queryFn: ({ signal }) => fetchPeople(page, search, signal),
+    queryFn: ({ signal }) => fetchCharacters(page, search, signal),
   });
 
   function setPage(next: number) {
@@ -62,10 +62,10 @@ export default function PeopleListPage() {
   return (
     <Box>
       <Box sx={{ mb: 2 }}>
-        <SearchBox value={search} onChange={setSearch} label="Search people" />
+        <SearchBox value={search} onChange={setSearch} label="Search characters" />
       </Box>
 
-      {isPending && <PeopleSkeletonGrid />}
+      {isPending && <CharactersSkeletonGrid />}
 
       {!isPending && data && data.results.length === 0 && (
         <Box sx={{ backgroundColor: "background.default", padding: 2, borderRadius: 1 }}>
@@ -76,13 +76,13 @@ export default function PeopleListPage() {
       {!isPending && data && data.results.length > 0 && (
         <>
           <Grid container spacing={2}>
-            {data.results.map((person) => {
-              const id = getPersonIdFromUrl(person.url);
-              const patch = getPersonEdit(id);
-              const merged = patch ? { ...person, ...patch } : person;
+            {data.results.map((character) => {
+              const id = getCharacterIdFromUrl(character.url);
+              const patch = getCharacterEdit(id);
+              const merged = patch ? { ...character, ...patch } : character;
               return (
-                <Grid key={person.url} size={{ xs: 12, sm: 6 }}>
-                  <PersonCard person={merged} />
+                <Grid key={character.url} size={{ xs: 12, sm: 6 }}>
+                  <CharacterCard character={merged} />
                 </Grid>
               );
             })}

@@ -13,17 +13,17 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-import { fetchPersonById } from "../services/swapi";
-import { useLocalPerson } from "../hooks/useLocalPerson";
+import { fetchCharacterById } from "../services/swapi";
+import { useLocalCharacter } from "../hooks/useLocalCharacter";
 
-export default function PersonDetailPage() {
+export default function CharacterDetailPage() {
   const { id = "" } = useParams();
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ["person", id],
-    queryFn: ({ signal }) => fetchPersonById(id, signal),
+    queryKey: ["character", id],
+    queryFn: ({ signal }) => fetchCharacterById(id, signal),
   });
 
-  const { merged, update, save, reset } = useLocalPerson(data, id);
+  const { merged, update, save, reset } = useLocalCharacter(data, id);
   const [savedOpen, setSavedOpen] = useState(false);
 
   useEffect(() => {

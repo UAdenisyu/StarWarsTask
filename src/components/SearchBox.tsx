@@ -39,7 +39,7 @@ export default function SearchBox({
           boxShadow: 2,
           borderRadius: 1,
         }}
-        placeholder="Type to search people"
+        placeholder="Type to search characters"
         onChange={(e) => {
           const v = e.target.value;
           setInner(v);

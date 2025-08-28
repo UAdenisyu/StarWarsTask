@@ -33,7 +33,7 @@ Production-ready build & deploy (Vercel/Netlify). Optional unit tests (Vitest + 
 - **States**: loading (skeletons), empty, error (retry from browser).
 - **Details page** with form; **Save locally** (per-id patch) & **Reset**.
 - Adaptive layout (MUI Grid), accessible form controls.
-- Dynamic `<title>` per route/person.
+- Dynamic `<title>` per route/character.
 
 ---
 
@@ -76,14 +76,14 @@ src/
     router.tsx
   components/
     PaginationBar.tsx
-    PersonCard.tsx
+    CharacterCard.tsx
     SearchBox.tsx
     Skeletons.tsx
   hooks/
-    useLocalPerson.ts
+    useLocalCharacter.ts
   pages/
-    PeopleListPage.tsx
-    PersonDetailPage.tsx
+    CharactersListPage.tsx
+    CharacterDetailPage.tsx
   services/
     localEdits.ts
     swapi.ts
@@ -109,7 +109,7 @@ main.tsx
 
 ### Data & Caching
 - **React Query** drives all fetching/caching.
-  - Keys: `["people", { page, search }]` and `["person", id]`.
+  - Keys: `["people", { page, search }]` and `["character", id]`.
   - `staleTime: 5m`, `retry: 1`, `keepPreviousData: true` for smooth paging.
   - Uses `AbortSignal` from queryFn to cancel outdated requests.
 
@@ -118,8 +118,8 @@ main.tsx
 - State mirrored in **URL** (`useSearchParams`); page resets to `1` when search changes.
 
 ### Local Edits
-- Stored as **partial patch** in `localStorage` under `swapi:person:<id>`.
-- `useLocalPerson` merges API data + patch and exposes `update / save / reset`.
+- Stored as **partial patch** in `localStorage` under `swapi:character:<id>`.
+- `useLocalCharacter` merges API data + patch and exposes `update / save / reset`.
 - Persisted across reloads; no server writes.
 
 ### UI/UX
@@ -146,8 +146,8 @@ main.tsx
 ---
 
 ## Testing
-- **PeopleListPage**: renders list, empty state, search debounce, paging.
-- **PersonDetailPage**: field edits, Save locally (localStorage), Reset.
+- **CharactersListPage**: renders list, empty state, search debounce, paging.
+- **CharacterDetailPage**: field edits, Save locally (localStorage), Reset.
 
 Example test setup:
 ```bash
@@ -193,7 +193,7 @@ Mock `fetch` or wrap fetchers for deterministic tests.
 
 ## Nice-to-Have (future work)
 - E2E tests (Playwright).
-- Prefetch person details on card hover.
+- Prefetch character details on card hover.
 - Persist React Query cache (offline mode).
 - i18n (en/ru/uk).
 - Dark theme toggle.

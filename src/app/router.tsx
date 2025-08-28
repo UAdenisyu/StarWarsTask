@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import PeopleListPage from "../pages/PeopleListPage";
-import PersonDetailPage from "../pages/PersonDetailPage";
+import CharactersListPage from "../pages/CharactersListPage";
+import CharacterDetailPage from "../pages/CharacterDetailPage";
 import AppLayout from "./AppLayout";
 
 export const appRouter = createBrowserRouter(
@@ -9,8 +9,8 @@ export const appRouter = createBrowserRouter(
       path: "/",
       element: <AppLayout />,
       children: [
-        { index: true, element: <PeopleListPage /> },
-        { path: "people/:id", element: <PersonDetailPage /> },
+        { index: true, element: <CharactersListPage /> },
+        { path: "people/:id", element: <CharacterDetailPage /> },
       ],
     },
     { path: "*", element: <div>Not found</div> },

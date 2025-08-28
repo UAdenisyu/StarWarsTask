@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Skeleton from "@mui/material/Skeleton";
 
-export function PeopleSkeletonGrid() {
+export function CharactersSkeletonGrid() {
   return (
     <Grid container spacing={2}>
       {Array.from({ length: 8 }).map((_, i) => (

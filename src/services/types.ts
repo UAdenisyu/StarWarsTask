@@ -5,7 +5,7 @@ export type SwapiListResponse<T> = {
   results: T[];
 };
 
-export type SwapiPerson = {
+export type SwapiCharacter = {
   name: string;
   height: string;
   mass: string;
