@@ -16,7 +16,8 @@ const checkEqual = (prev: { character: SwapiCharacter }, next: { character: Swap
   prev.character.name === next.character.name &&
   prev.character.gender === next.character.gender &&
   prev.character.birth_year === next.character.birth_year &&
-  prev.character.height === next.character.height;
+  prev.character.height === next.character.height &&
+  prev.character.url === next.character.url;
 
 const CharacterCard: FC<CharacterCardProps> = memo(({ character }) => {
   const id = getCharacterIdFromUrl(character.url);
