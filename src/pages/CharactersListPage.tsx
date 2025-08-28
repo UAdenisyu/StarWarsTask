@@ -19,6 +19,7 @@ const CharactersListPage = () => {
   const [params, setParams] = useSearchParams();
   const page = Math.max(1, Number(params.get("page") || 1));
   const search = params.get("search") || "";
+  const searchLc = search.trim().toLowerCase();
 
   useEffect(() => {
     document.title = "Characters — SWAPI Explorer";
@@ -28,28 +29,19 @@ const CharactersListPage = () => {
 
   const { data, isPending, isError, error } = useQuery({
     queryKey,
-    queryFn: ({ signal }) => fetchCharacters(page, search, signal),
+    queryFn: ({ signal }) => fetchCharacters(page, "", signal),
   });
 
-  const chars = useMemo(
-    () =>
-      data && data.results.length
-        ? data.results.map(
-            (character) => {
-              const id = getCharacterIdFromUrl(character.url);
-              const patch = getCharacterEdit(id);
-              const merged = patch ? { ...character, ...patch } : character;
-              return (
-                <Grid key={character.url} size={{ xs: 12, sm: 6 }}>
-                  <CharacterCard character={merged} />
-                </Grid>
-              );
-            },
-            [data]
-          )
-        : null,
-    [data]
-  );
+  const mergedAndFiltered = useMemo(() => {
+    if (!data) return [];
+    const merged = data.results.map((character) => {
+      const id = getCharacterIdFromUrl(character.url);
+      const patch = getCharacterEdit(id);
+      return patch ? { ...character, ...patch } : character;
+    });
+    if (!searchLc) return merged;
+    return merged.filter((c) => (c.name || "").toLowerCase().includes(searchLc));
+  }, [data, searchLc]);
 
   if (isError) {
     return <Alert severity="error">{(error as Error).message}</Alert>;
@@ -67,16 +59,20 @@ const CharactersListPage = () => {
 
       {isPending && <CharactersSkeletonGrid />}
 
-      {!isPending && data && data.results.length === 0 && (
+      {!isPending && data && mergedAndFiltered.length === 0 && (
         <Box sx={{ backgroundColor: "background.default", padding: 2, borderRadius: 1 }}>
           <Typography>No results</Typography>
         </Box>
       )}
 
-      {!isPending && data && data.results.length > 0 && (
+      {!isPending && data && mergedAndFiltered.length > 0 && (
         <>
           <Grid container spacing={2}>
-            {chars}
+            {mergedAndFiltered.map((character) => (
+              <Grid key={character.url} size={{ xs: 12, sm: 6 }}>
+                <CharacterCard character={character} />
+              </Grid>
+            ))}
           </Grid>
           <Box bgcolor={"background.default"} mt={2} borderRadius={1}>
             <PaginationBar
